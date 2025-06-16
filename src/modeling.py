@@ -8,12 +8,20 @@ from sklearn.metrics import classification_report, confusion_matrix, precision_r
 import lightgbm as lgb
 
 
-def train_model(pipeline, X_train, y_train):
+from sklearn.pipeline import Pipeline
+from src.modeling import LGBMModel
+
+def train_model(feature_pipeline, X_train, y_train):
     """
-    Fits the pipeline and trains the final model.
+    Creates full pipeline (features + model) and fits it.
     """
-    pipeline.fit(X_train, y_train)
-    return pipeline
+    full_pipeline = Pipeline([
+        ('features', feature_pipeline),
+        ('classifier', LGBMModel().get_model())
+    ])
+    full_pipeline.fit(X_train, y_train)
+    return full_pipeline
+
 
 
 def evaluate_model(model, X_test, y_test, threshold=0.5):
