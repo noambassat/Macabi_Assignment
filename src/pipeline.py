@@ -17,26 +17,34 @@ from tqdm import tqdm
 
 class ClinicalPreprocessor(BaseEstimator, TransformerMixin):
     """
-    Pipeline for imputing, scaling, and selecting clinical features using ElasticNet.
+    Selects informative clinical features using ElasticNet, then scales them.
     """
     def __init__(self, clinical_columns=None):
         self.clinical_columns = clinical_columns
-        self.pipeline = make_pipeline(
-            SimpleImputer(strategy='constant', fill_value=-1),
-            StandardScaler(),
-            ElasticNetCV(cv=5, random_state=42)
-        )
+        self.imputer = SimpleImputer(strategy='constant', fill_value=-1)
+        self.scaler = StandardScaler()
+        self.selector = ElasticNetCV(cv=5, random_state=42)
 
     def fit(self, X, y):
         X_clinical = X[self.clinical_columns]
-        self.pipeline.fit(X_clinical, y)
-        coefs = self.pipeline.named_steps['elasticnetcv'].coef_
-        self.selected_columns_ = X_clinical.columns[np.abs(coefs) > 0]
+        X_imputed = self.imputer.fit_transform(X_clinical)
+        self.selector.fit(X_imputed, y)
+
+        selected_mask = np.abs(self.selector.coef_) > 0
+        self.selected_indices_ = np.where(selected_mask)[0]
+        self.selected_columns_ = np.array(self.clinical_columns)[self.selected_indices_]
+
+        X_selected = X_imputed[:, self.selected_indices_]
+        self.scaler.fit(X_selected)
+
         return self
 
     def transform(self, X):
         X_clinical = X[self.clinical_columns]
-        return self.pipeline.transform(X_clinical[self.selected_columns_])
+        X_imputed = self.imputer.transform(X_clinical)
+        X_selected = X_imputed[:, self.selected_indices_]
+        return self.scaler.transform(X_selected)
+
 
 class WordFeatureGenerator(BaseEstimator, TransformerMixin):
     """
