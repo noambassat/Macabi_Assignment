@@ -24,7 +24,8 @@ Home_Assignment/
 
 ---
 
-# Assignment main Notebook : https://github.com/noambassat/Macabi_Assignment/blob/main/macabi_home_assignment.ipynb
+## Assignment main Notebook
+https://github.com/noambassat/Macabi_Assignment/blob/main/macabi_home_assignment.ipynb
 
 ## Getting Started
 
