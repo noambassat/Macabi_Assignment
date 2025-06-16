@@ -49,13 +49,15 @@ class WordFeatureGenerator(BaseEstimator, TransformerMixin):
 
     def fit(self, X, y):
         from sklearn.feature_selection import mutual_info_classif
-        X_vec = self.vectorizer.fit_transform(X)
+        texts = X.squeeze().tolist()  # Convert Series to list of strings
+        X_vec = self.vectorizer.fit_transform(texts)
         mi_scores = mutual_info_classif(X_vec, y, discrete_features=False, random_state=42)
         self.selected_indices_ = np.where(mi_scores > self.mi_threshold)[0]
         return self
 
     def transform(self, X):
-        X_vec = self.vectorizer.transform(X)
+        texts = X.squeeze().tolist()
+        X_vec = self.vectorizer.transform(texts)
         return X_vec[:, self.selected_indices_].toarray()
 
 
