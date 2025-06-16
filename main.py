@@ -15,7 +15,7 @@ def main():
 
     # Build pipeline
     pipeline = build_pipeline(
-        clinical_columns=None,
+        clinical_columns=X_train.select_dtypes(include='number').columns.tolist(),
         text_column='clinical_sheet',
         embedding_column='last_week_paragraph'
     )

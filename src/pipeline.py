@@ -19,7 +19,8 @@ class ClinicalPreprocessor(BaseEstimator, TransformerMixin):
     """
     Pipeline for imputing, scaling, and selecting clinical features using ElasticNet.
     """
-    def __init__(self):
+    def __init__(self, clinical_columns=None):
+        self.clinical_columns = clinical_columns
         self.pipeline = make_pipeline(
             SimpleImputer(strategy='constant', fill_value=-1),
             StandardScaler(),
@@ -27,13 +28,15 @@ class ClinicalPreprocessor(BaseEstimator, TransformerMixin):
         )
 
     def fit(self, X, y):
-        self.pipeline.fit(X, y)
+        X_clinical = X[self.clinical_columns]
+        self.pipeline.fit(X_clinical, y)
         coefs = self.pipeline.named_steps['elasticnetcv'].coef_
-        self.selected_columns_ = X.columns[np.abs(coefs) > 0]
+        self.selected_columns_ = X_clinical.columns[np.abs(coefs) > 0]
         return self
 
     def transform(self, X):
-        return self.pipeline.transform(X[self.selected_columns_])
+        X_clinical = X[self.clinical_columns]
+        return self.pipeline.transform(X_clinical[self.selected_columns_])
 
 
 class WordFeatureGenerator(BaseEstimator, TransformerMixin):
@@ -86,7 +89,7 @@ def build_pipeline(clinical_columns, text_column, embedding_column):
     Builds unified feature pipeline combining clinical, text, and embedding features.
     """
     return FeatureUnion([
-        ('clinical', ClinicalPreprocessor()),
+        ('clinical', ClinicalPreprocessor(clinical_columns=clinical_columns)),
         ('words', WordFeatureGenerator()),
         ('embeddings', EmbeddingTransformer())
     ])
