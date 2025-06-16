@@ -51,7 +51,8 @@ class WordFeatureGenerator(BaseEstimator, TransformerMixin):
         from sklearn.feature_selection import mutual_info_classif
         texts = X[self.text_column].tolist()
         X_vec = self.vectorizer.fit_transform(texts)
-        mi_scores = mutual_info_classif(X_vec, y, discrete_features=False, random_state=42)
+        # ✅ Fix: use discrete_features=True for sparse matrix
+        mi_scores = mutual_info_classif(X_vec, y, discrete_features=True, random_state=42)
         self.selected_indices_ = np.where(mi_scores > self.mi_threshold)[0]
         return self
 
