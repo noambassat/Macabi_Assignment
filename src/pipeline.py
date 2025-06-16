@@ -38,25 +38,25 @@ class ClinicalPreprocessor(BaseEstimator, TransformerMixin):
         X_clinical = X[self.clinical_columns]
         return self.pipeline.transform(X_clinical[self.selected_columns_])
 
-
 class WordFeatureGenerator(BaseEstimator, TransformerMixin):
     """
-    Generates TF-IDF features filtered by Mutual Information.
+    Generates TF-IDF features filtered by Mutual Information from a specified text column.
     """
-    def __init__(self, mi_threshold=0.005):
+    def __init__(self, text_column, mi_threshold=0.005):
+        self.text_column = text_column
         self.mi_threshold = mi_threshold
         self.vectorizer = TfidfVectorizer(use_idf=True, min_df=5, sublinear_tf=True)
 
     def fit(self, X, y):
         from sklearn.feature_selection import mutual_info_classif
-        texts = X.squeeze().tolist()  # Convert Series to list of strings
+        texts = X[self.text_column].tolist()
         X_vec = self.vectorizer.fit_transform(texts)
         mi_scores = mutual_info_classif(X_vec, y, discrete_features=False, random_state=42)
         self.selected_indices_ = np.where(mi_scores > self.mi_threshold)[0]
         return self
 
     def transform(self, X):
-        texts = X.squeeze().tolist()
+        texts = X[self.text_column].tolist()
         X_vec = self.vectorizer.transform(texts)
         return X_vec[:, self.selected_indices_].toarray()
 
@@ -86,12 +86,9 @@ class EmbeddingTransformer(BaseEstimator, TransformerMixin):
         return np.vstack(embeddings)
 
 def build_pipeline(clinical_columns, text_column, embedding_column):
-    """
-    Builds unified feature pipeline combining clinical, text, and embedding features.
-    """
     return FeatureUnion([
         ('clinical', ClinicalPreprocessor(clinical_columns=clinical_columns)),
-        ('words', WordFeatureGenerator()),
+        ('words', WordFeatureGenerator(text_column=text_column)),
         ('embeddings', EmbeddingTransformer())
     ])
 
