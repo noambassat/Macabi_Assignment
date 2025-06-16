@@ -3,13 +3,14 @@ import pandas as pd
 import joblib
 import matplotlib.pyplot as plt
 import seaborn as sns
+from src.models import LGBMModel
 
 from sklearn.metrics import classification_report, confusion_matrix, precision_recall_curve
 import lightgbm as lgb
 
 
 from sklearn.pipeline import Pipeline
-from src.modeling import LGBMModel
+
 
 def train_model(feature_pipeline, X_train, y_train):
     """
