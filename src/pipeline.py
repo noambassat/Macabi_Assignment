@@ -85,7 +85,6 @@ class EmbeddingTransformer(BaseEstimator, TransformerMixin):
             embeddings.extend(batch_embeddings)
         return np.vstack(embeddings)
 
-
 def build_pipeline(clinical_columns, text_column, embedding_column):
     """
     Builds unified feature pipeline combining clinical, text, and embedding features.
