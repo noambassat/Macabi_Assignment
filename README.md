@@ -6,20 +6,25 @@ This repository contains a complete machine learning pipeline for predicting hyp
 
 ## Project Structure
 
+
 ```
 Home_Assignment/
-├── main.py                  # Entry point for training, evaluation, and saving model
-├── config.py                # Centralized configuration paths and settings
-├── requirements.txt         # Python package dependencies
-├── README.md                # Project documentation (this file)
-├── data/                    # Directory for raw or intermediate datasets
-├── models/                  # Trained model artifacts saved by joblib
-├── outputs/                 # Evaluation outputs and plots
+                   
+├── config.py                  # Centralized configuration paths and settings
+├── data/                      # Input dataset(s)
+├── main.py                    # Entry point for training, evaluation, and saving model
+├── macabi_home_assignment.ipynb   # Original main notebook
+├── macabi_home_assignment.html    # Exported HTML version of the notebook
+├── models/                    # Trained model artifacts saved by joblib (may be empty initially)
+├── requirements.txt           # Python dependencies for the environment
+├── README.md                  # Project documentation (this file)
+├── Clinical_Model_Summary.pdf # Formal PDF summary of methodology and results
 └── src/
-    ├── feature_engineering.py  # Data preparation, stratified splitting, and custom features
-    ├── modeling.py             # Training, evaluation, PR curve and model persistence
-    ├── pipeline.py             # sklearn-compatible modular pipeline with transformers
-    ├── utils.py                # (Optional) reusable utilities
+    ├── feature_engineering.py     # Data preparation, stratified splitting, and custom features
+    ├── modeling.py                # Training & evaluation
+    ├── pipeline.py                # sklearn-compatible modular pipeline
+    ├── utils.py                   # Reusable utility functions
+    ├── models.py                  # LightGBM model wrapper class
 ```
 
 ---
