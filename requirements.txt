@@ -1,10 +1,10 @@
-echo pandas > requirements.txt
-echo numpy >> requirements.txt
-echo scikit-learn >> requirements.txt
-echo lightgbm >> requirements.txt
-echo sentence-transformers >> requirements.txt
-echo torch >> requirements.txt
-echo tqdm >> requirements.txt
-echo joblib >> requirements.txt
-echo matplotlib >> requirements.txt
-echo seaborn >> requirements.txt
+pandas
+numpy
+scikit-learn
+lightgbm
+sentence-transformers
+torch
+tqdm
+joblib
+matplotlib
+seaborn
