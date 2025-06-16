@@ -82,8 +82,8 @@ def save_model(model, path):
     """
     Saves the trained model pipeline to disk.
     """
+    os.makedirs(os.path.dirname(path), exist_ok=True)
     joblib.dump(model, path)
-
 
 def load_model(path):
     """
