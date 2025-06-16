@@ -74,7 +74,8 @@ class EmbeddingTransformer(BaseEstimator, TransformerMixin):
     """
     Encodes input text using a pretrained SentenceTransformer model.
     """
-    def __init__(self, model_name='intfloat/multilingual-e5-base', device='cpu'):
+    def __init__(self, text_column, model_name='intfloat/multilingual-e5-base', device='cpu'):
+        self.text_column = text_column
         self.model_name = model_name
         self.device = device
 
@@ -84,7 +85,7 @@ class EmbeddingTransformer(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, X):
-        texts = X.squeeze().tolist()
+        texts = X[self.text_column].tolist()
         embeddings = []
         batch_size = 64
         for i in tqdm(range(0, len(texts), batch_size), desc='Encoding embeddings'):
@@ -94,12 +95,14 @@ class EmbeddingTransformer(BaseEstimator, TransformerMixin):
             embeddings.extend(batch_embeddings)
         return np.vstack(embeddings)
 
+
 def build_pipeline(clinical_columns, text_column, embedding_column):
     return FeatureUnion([
         ('clinical', ClinicalPreprocessor(clinical_columns=clinical_columns)),
         ('words', WordFeatureGenerator(text_column=text_column)),
-        ('embeddings', EmbeddingTransformer())
+        ('embeddings', EmbeddingTransformer(text_column=embedding_column))
     ])
+
 
 
 class LGBMModel:
