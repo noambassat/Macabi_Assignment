@@ -24,6 +24,8 @@ Home_Assignment/
 
 ---
 
+# Assignment main Notebook : https://github.com/noambassat/Macabi_Assignment/blob/main/macabi_home_assignment.ipynb
+
 ## Getting Started
 
 ### 1. Clone the Repository
@@ -44,7 +46,7 @@ venv\Scripts\activate.bat      # On Windows
 pip install -r requirements.txt
 ```
 
-> **Note:** This project uses `sentence-transformers` for embedding clinical text. The default setup runs on CPU. If available, we recommend enabling **GPU support** via CUDA-enabled PyTorch for significantly faster embedding inference.
+> **Note:** This project uses `sentence-transformers` for embedding clinical text. The default setup runs on CPU. If available, it is recommended to enable **GPU support** via CUDA-enabled PyTorch for significantly faster embedding inference.
 
 ---
 
