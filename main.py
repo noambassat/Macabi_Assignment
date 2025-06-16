@@ -30,6 +30,5 @@ def main():
     # Save model
     save_model(model, Config.MODEL_PATH)
 
-
 if __name__ == '__main__':
     main()
