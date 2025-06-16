@@ -84,7 +84,7 @@ class EmbeddingTransformer(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, X):
-        texts = X.tolist()
+        texts = X.squeeze().tolist()
         embeddings = []
         batch_size = 64
         for i in tqdm(range(0, len(texts), batch_size), desc='Encoding embeddings'):
