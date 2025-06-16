@@ -15,24 +15,3 @@ Home_Assignment/
     ├── modeling.py
     ├── pipeline.py
     ├── utils.py
-
-
-Home_Assignment/
-│
-├── data/
-│   └── ds_assignment_data.csv
-│
-├── notebooks/
-│   └── main_notebook.ipynb   
-│
-├── scripts/
-│   ├── load_data.py         
-│   ├── preprocess.pypy             
-├── requirements.txt
-└── README.md
-```
-       
-│   ├── train_model.py       
-│   └── evaluate.py          
-│
-├── main.

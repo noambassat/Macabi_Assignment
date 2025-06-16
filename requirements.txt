@@ -2,9 +2,9 @@ pandas
 numpy
 scikit-learn
 lightgbm
-matplotlib
-seaborn
-tqdm
-joblib
 sentence-transformers
 torch
+tqdm
+joblib
+matplotlib
+seaborn
