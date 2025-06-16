@@ -4,6 +4,8 @@ from src.pipeline import build_pipeline
 from src.modeling import train_model, evaluate_model, plot_precision_recall_curve, save_model
 
 from config import Config
+import warnings
+warnings.filterwarnings('ignore')
 
 
 def main():
@@ -25,7 +27,7 @@ def main():
 
 
     # Evaluate
-    proba, y_pred = evaluate_model(model, X_test, y_test, threshold=0.05)
+    proba, y_pred = evaluate_model(model, X_test, y_test, threshold=0.5)
     plot_precision_recall_curve(y_test, proba)
 
     # Save model
